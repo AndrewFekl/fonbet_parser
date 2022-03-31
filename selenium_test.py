@@ -8,36 +8,27 @@ from parsers import GamesParser, get_md5_key
 target_url = "https://www.fonbet.ru/live/"
 games_url = 'https://line14.bkfon-resources.com/live/currentLine/ru'
 
+# Инициируем объект парсера данных и получим словарь матчей в Live
 games_parser = GamesParser(games_url)
 sport_id_list = games_parser.get_sport_id_list()
 games_dict = games_parser.get_live_footbol_matches(sport_id_list)
 
-#for key, value in games_dict.items():
-    #print(key, value, type(value))
-
+# Получим последний матч из словаря
 last_match = games_dict.popitem()
 link_text = last_match[1]
-#byte_text1 = link_text.encode()
 
-master_text = "Депортиво Масая — Пирукс Масатепе"
-#byte_text2 = master_text.encode()
-
+# Распечатаем текущий матч
 print(link_text)
-print(master_text)
-print(link_text == master_text)
-
-"""print(byte_text1)
-print(byte_text2)
-print(byte_text1 == byte_text2)"""
-
 
 
 def get_match_name(link_text):
+    """ Функция получает описания матча и открывает ссылку на него на сайте fonbet.ru/live.
+    Далее получает с открывшейся страницы и распечатывает название футбольной лиги/дивизиона, в котором идет матч"""
+
     try:
         browser = webdriver.Chrome()
         browser.get(target_url)
 
-        #link = browser.find_element(By.LINK_TEXT, "Депортиво Масая — Пирукс Масатепе")
         link = WebDriverWait(browser, 15).until(EC.element_to_be_clickable((By.LINK_TEXT, link_text)))
         link.click()
 
