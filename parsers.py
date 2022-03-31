@@ -1,8 +1,8 @@
 import hashlib
 import requests
-import json
 
 
+# Адрес для парсинга информации
 games_url = 'https://line14.bkfon-resources.com/live/currentLine/ru'
 
 def get_md5_key(id, gamer_name):
@@ -14,15 +14,18 @@ def get_md5_key(id, gamer_name):
 
 
 class GamesParser():
+    """ Класс парсера данных о матчах на Фонбет в режиме Live.
+    Объект класса инициализируется с передачей url api и содержит два метода - получения id соревнований
+    и собственно списка футбольных матчей"""
 
 
     def __init__(self, games_url):
 
         self.games_url = games_url
-        #self.footbol_competitions = [1, 54143, 76168, 76235, 36550, 58063, 76521, 62900]
 
 
     def get_sport_id_list(self):
+        """ Получаем список id футбольных соревнований """
 
         sport_id_list = []
         sports_list = requests.get(self.games_url).json()["sports"]
@@ -39,6 +42,8 @@ class GamesParser():
 
 
     def get_live_footbol_matches(self, sport_id_list):
+        """ Получаем словарь футбольных матчей в Live. Ключи словаря хэш от id матча и
+         строки названий команд игроков """
 
         live_footbol_games = {}
         matches = requests.get(self.games_url).json()["events"]
