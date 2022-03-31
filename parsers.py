@@ -10,7 +10,7 @@ def get_md5_key(id, gamer_name):
 
     key_str = str(id) + gamer_name
     hash_object = hashlib.md5(key_str.encode())
-    return hash_object
+    return hash_object.hexdigest()
 
 
 class GamesParser():
@@ -55,9 +55,11 @@ class GamesParser():
                     if line["sportId"] in sport_id_list:
 
                         id = line["id"]
-                        team1 = line["team1"]
-                        team2 = line["team2"]
-                        gamer_name = f'{team1} - {team2}'
+                        team1 = str(line["team1"]).strip()
+                        team2 = str(line["team2"]).strip()
+                        tire_b = b' \xe2\x80\x94 '
+                        tire = tire_b.decode()
+                        gamer_name = team1 + tire +team2
                         key = get_md5_key(id, "some thing")
                         live_footbol_games.update({key: gamer_name})
 
